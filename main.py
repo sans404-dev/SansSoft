@@ -26,7 +26,7 @@ __) (_| | ) _) __) (_) |  |_[/]\n\n[bold white]Версия:[/] [bold magenta]{v
 \n[bold white]Кол-во плагинов:[/] {len(plugins_list)}
 \n[{index}][bold green] - {test.name}""")
 except NameError as NameErr:
-	console.print(f"[bold red][X] Некоторые плагины не были были загружены корректно!\n\nОШИБКА: {NameErr}")
+	console.print(f"[bold red][X] Некоторые плагины не были загружены корректно!\n\nОШИБКА: {NameErr}")
 else:
 	menu()
 	if menu == 1:
