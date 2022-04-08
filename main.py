@@ -1,10 +1,19 @@
 import os
+from sys import exit
+from loguru import logger
 from os import system
 from rich.console import Console
-from plugins import test
 
-version = "альфа 0.1"
-plugins_list = [file for file in os.listdir("plugins") if file.endswith(".py")]
+try:
+    from modules import test
+except ImportError as ImportErr:
+    logger.error(
+        f"\n[X] Некоторые модули не были были загружены корректно!\nОШИБКА: {ImportErr}"
+    )
+    exit(1)
+
+version = "альфа 0.2"
+plugins_list = [file for file in os.listdir("modules") if file.endswith(".py")]
 
 if len(plugins_list) == 1:
     index = 1
@@ -21,19 +30,16 @@ def menu():
         menu()
 
 
-try:
-    console.print(
-        f"""[bold blue] __             __      _    
+console.print(
+    f"""[bold blue] __             __      _    
 (_   _   _   _ (_   _  (_ |_ 
 __) (_| | ) _) __) (_) |  |_[/]\n\n[bold white]Версия:[/] [bold magenta]{version}[/]
-\n[bold white]Кол-во плагинов:[/] {len(plugins_list)}
+\n[bold white]Кол-во модулей:[/] {len(plugins_list)}
 \n[{index}][bold green] - {test.name}"""
-    )
-except NameError as NameErr:
-    console.print(
-        f"[bold red][X] Некоторые плагины не были были загружены корректно!\n\nОШИБКА: {NameErr}"
-    )
-else:
-    menu()
-    if menu == 1:
+)
+menu()
+if menu == 1:
+    try:
         test.main()
+    except Exception as moduleEXC:
+        logger.critical(moduleEXC)
